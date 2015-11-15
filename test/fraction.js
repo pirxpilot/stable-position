@@ -11,6 +11,23 @@ describe('effective char range', function() {
 
 describe('fraction', function () {
 
+  describe('before', function() {
+    it('should return value smaller than passed', function() {
+      (fraction.before('a') < 'a').should.be.ok();
+    });
+  });
+
+  describe('after', function() {
+    it('should return value smaller than passed', function() {
+      (fraction.after('a') > 'a').should.be.ok();
+    });
+  });
+
+  describe('first', function() {
+    it('should return value in the middle of available range', function() {
+      fraction.first().charCodeAt(0).should.be.eql(0x7FFF);
+    });
+  });
 
   describe('between', function() {
 
