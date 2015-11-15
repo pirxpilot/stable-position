@@ -87,6 +87,25 @@ describe('fraction', function () {
 
   });
 
+  describe('betweenSeries', function() {
+    it('should find optimal values between', function() {
+      fraction.betweenSeries('a', 'd', 2).should.eql(['b', 'c']);
+      fraction.betweenSeries('a', 'e', 2).should.eql(['b', 'c']);
+      fraction.betweenSeries('a', 'f', 2).should.eql(['c', 'e']);
+      fraction.betweenSeries('a', 'f', 3).should.eql(['b', 'c', 'd']);
+    });
+
+    it('should split result to fit additional values', function() {
+      fraction.betweenSeries('a', 'b', 3).should.eql(['a\u5554', 'a\uaaa8', 'a\ufffc']);
+    });
+
+    it('should return the sorted list of all positions', function() {
+      var positions = fraction.betweenSeries('a', 'd', 10000);
+      positions.should.have.length(10000);
+      positions.sort().should.eql(positions);
+    });
+
+  });
 
   describe('compare', function() {
     it('should return 0 for equal', function () {
@@ -99,6 +118,7 @@ describe('fraction', function () {
 
     it('should detect -1 for <', function () {
       fraction.compare('abc', 'abcd').should.eql(-1);
+      fraction.compare('abc\uaaaa', 'abc\uaaab').should.eql(-1);
       fraction.compare('a', 'aa').should.eql(-1);
       fraction.compare('a0', 'aZ').should.eql(-1);
     });
