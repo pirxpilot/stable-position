@@ -1,1 +1,2 @@
-module.exports = require('./lib/stable-position');
+module.exports = require('./lib/fraction');
+module.exports.convert = require('./lib/util').convert;
