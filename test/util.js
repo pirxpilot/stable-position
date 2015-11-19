@@ -40,3 +40,27 @@ describe('padRight', function() {
     util.padRight('ab', 2, 'z').should.eql('ab');
   });
 });
+
+describe('convert', function() {
+  it('should create fractions for integer values', function() {
+    util.convert(0).should.be.eql('\u7000');
+    util.convert(5).should.be.eql('\u7005');
+    util.convert(-10).should.be.eql('\u6FF6');
+  });
+
+  it('should create fractions for double values', function() {
+
+    util.convert(0.46).should.be.eql('\u7000\u75c2\u8f5c\u28f5\uc400');
+    util.convert(5.244).should.be.eql('\u7005\u3e76\uc8b4\u3958');
+
+    util.convert(-10.98423234).should.be.eql('\u6FF6\u0409\u5970\u08D1\u7fff');
+    util.convert(-10.98423233).should.be.eql('\u6FF6\u0409\u599A\uFBEF\u7fff');
+  });
+
+  it('should maintain monotonicity', function() {
+    (util.convert(0.46) < util.convert(5.244)).should.be.ok();
+    (util.convert(-5.244) < util.convert(0.46)).should.be.ok();
+    (util.convert(-10.5) < util.convert(-10.4)).should.be.ok();
+    (util.convert(-11.3) < util.convert(-10.4)).should.be.ok();
+  });
+});
