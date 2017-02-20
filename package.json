@@ -4,10 +4,10 @@
   "description": "Generate unique position that can be used to order items without renumbering them.",
   "author": {
     "name": "Damian Krzeminski",
-    "email": "pirxpilot@code42day.com",
-    "url": "https://code42day.com"
+    "email": "pirxpilot@furkot.com",
+    "url": "https://pirxpilot.me"
   },
-  "repository": "code42day/stable-position",
+  "repository": "pirxpilot/stable-position",
   "license": "MIT",
   "keywords": [
     "stable-position",

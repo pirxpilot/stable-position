@@ -22,13 +22,13 @@ stablePosition('Rainbow');
 
 ## License
 
-MIT © [Damian Krzeminski](https://code42day.com)
+MIT © [Damian Krzeminski](https://pirxpilot.me)
 
 [npm-image]: https://img.shields.io/npm/v/stable-position.svg
 [npm-url]: https://npmjs.org/package/stable-position
 
-[travis-url]: https://travis-ci.org/code42day/stable-position
-[travis-image]: https://img.shields.io/travis/code42day/stable-position.svg
+[travis-url]: https://travis-ci.org/pirxpilot/stable-position
+[travis-image]: https://img.shields.io/travis/pirxpilot/stable-position.svg
 
-[gemnasium-image]: https://img.shields.io/gemnasium/code42day/stable-position.svg
-[gemnasium-url]: https://gemnasium.com/code42day/stable-position
+[gemnasium-image]: https://img.shields.io/gemnasium/pirxpilot/stable-position.svg
+[gemnasium-url]: https://gemnasium.com/pirxpilot/stable-position
