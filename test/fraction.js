@@ -1,79 +1,90 @@
-// var should = require('should');
-var fraction = require('../lib/fraction');
+const test = require('tape');
+const fraction = require('../lib/fraction');
 
 
-describe('effective char range', function() {
-  it('should be able to store char', function() {
-    String.fromCharCode(0).charCodeAt(0).should.eql(0);
-    String.fromCharCode(0xFFFF).charCodeAt(0).should.eql(0xFFFF);
+test('effective char range', function (t) {
+  t.test('should be able to store char', function (t) {
+    t.plan(2);
+
+    t.equal(String.fromCharCode(0).charCodeAt(0), 0);
+    t.equal(String.fromCharCode(0xFFFF).charCodeAt(0), 0xFFFF);
   });
 });
 
-describe('fraction', function () {
+test('fraction', function (t) {
 
-  describe('before', function() {
-    it('should return value smaller than passed', function() {
-      (fraction.before('a') < 'a').should.be.ok();
+  t.test('before', function (t) {
+    t.test('should return value smaller than passed', function (t) {
+      t.plan(1);
+      t.ok(fraction.before('a') < 'a');
     });
   });
 
-  describe('after', function() {
-    it('should return value smaller than passed', function() {
-      (fraction.after('a') > 'a').should.be.ok();
+  t.test('after', function (t) {
+    t.test('should return value smaller than passed', function (t) {
+      t.plan(1);
+      t.ok(fraction.after('a') > 'a');
     });
   });
 
-  describe('first', function() {
-    it('should return value in the middle of available range', function() {
-      fraction.first().charCodeAt(0).should.be.eql(0x7FFF);
+  t.test('first', function (t) {
+    t.test('should return value in the middle of available range', function (t) {
+      t.plan(1);
+      t.equal(fraction.first().charCodeAt(0), 0x7FFF);
     });
   });
 
-  describe('between', function() {
+  t.test('between', function (t) {
 
-    it('find a fraction between two values', function () {
-      fraction.between('0', 'z').should.be.eql('U');
-      fraction.between('e', 'f').should.be.eql('e翿');
-      fraction.between('0', '1').should.be.eql('0翿');
+    t.test('find a fraction between two values', function (t) {
+      t.plan(7);
 
-      fraction.between('U', 'z').should.be.eql('g');
-      fraction.between('yU', 'z').should.be.eql('y耪');
+      t.equal(fraction.between('0', 'z'), 'U');
+      t.equal(fraction.between('e', 'f'), 'e翿');
+      t.equal(fraction.between('0', '1'), '0翿');
+
+      t.equal(fraction.between('U', 'z'), 'g');
+      t.equal(fraction.between('yU', 'z'), 'y耪');
 
 
-      fraction.between('abb', 'abbdefZ').should.be.eql('abb2');
+      t.equal(fraction.between('abb', 'abbdefZ'), 'abb2');
 
-      fraction.between('aBBcccc', 'aZ').should.be.eql('aN');
+      t.equal(fraction.between('aBBcccc', 'aZ'), 'aN');
     });
 
-    it('find in between before', function () {
-      var from = '0', to = 'z', b, i;
+    t.test('find in between before', function (t) {
+      let from = '0', to = 'z', b;
 
-      for (i = 0; i < 1000; i++) {
+      for (let i = 0; i < 1000; i++) {
         b = fraction.between(from, to);
-        fraction.compare(from, b).should.eql(-1);
-        fraction.compare(to, b).should.eql(1);
+        t.equal(fraction.compare(from, b), -1);
+        t.equal(fraction.compare(to, b), 1);
         to = b;
       }
+
+      t.end();
     });
 
-    it('find in between after', function () {
-      var from = '0', to = 'z', b, i;
+    t.test('find in between after', function (t) {
+      let from = '0', to = 'z', b;
 
-      for (i = 0; i < 1000; i++) {
+      for (let i = 0; i < 1000; i++) {
         b = fraction.between(from, to);
-        fraction.compare(from, b).should.eql(-1);
-        fraction.compare(to, b).should.eql(1);
+        t.equal(fraction.compare(from, b), -1);
+        t.equal(fraction.compare(to, b), 1);
         from = b;
       }
+
+      t.end();
     });
 
-    it('find in between alternating before and after', function () {
+    t.test('find in between alternating before and after', function (t) {
       var from = '3', to = 'w', b, i;
 
       for (i = 0; i < 5000; i++) {
         b = fraction.between(from, to);
-        fraction.compare(from, b).should.eql(-1);
-        fraction.compare(to, b).should.eql(1);
+        t.equal(fraction.compare(from, b), -1);
+        t.equal(fraction.compare(to, b), 1);
         if (i % 2) {
           from = b;
         } else {
@@ -81,52 +92,69 @@ describe('fraction', function () {
         }
       }
 
-      console.log(b.length);
-      b.length.should.be.below(1000);
+      t.ok(b.length < 1000, 'b length should be below 1000');
+
+      t.end();
     });
 
   });
 
-  describe('betweenSeries', function() {
-    it('should find optimal values between', function() {
-      fraction.betweenSeries('a', 'd', 2).should.eql(['b', 'c']);
-      fraction.betweenSeries('a', 'e', 2).should.eql(['b', 'c']);
-      fraction.betweenSeries('a', 'f', 2).should.eql(['c', 'e']);
-      fraction.betweenSeries('a', 'f', 3).should.eql(['b', 'c', 'd']);
+  t.test('betweenSeries', function (t) {
+    t.test('should find optimal values between', function (t) {
+      t.plan(4);
+      t.same(fraction.betweenSeries('a', 'd', 2), ['b', 'c']);
+      t.same(fraction.betweenSeries('a', 'e', 2), ['b', 'c']);
+      t.same(fraction.betweenSeries('a', 'f', 2), ['c', 'e']);
+      t.same(fraction.betweenSeries('a', 'f', 3), ['b', 'c', 'd']);
     });
 
-    it('should split result to fit additional values', function() {
-      fraction.betweenSeries('a', 'b', 3).should.eql(['a\u5554', 'a\uaaa8', 'a\ufffc']);
+    t.test('should split result to fit additional values', function (t) {
+      t.plan(1);
+      t.same(fraction.betweenSeries('a', 'b', 3), ['a\u5554', 'a\uaaa8', 'a\ufffc']);
     });
 
-    it('should return the sorted list of all positions', function() {
-      var positions = fraction.betweenSeries('a', 'd', 10000);
-      positions.should.have.length(10000);
-      positions.sort().should.eql(positions);
+    t.test('should return the sorted list of all positions', function (t) {
+      t.plan(2);
+
+      const positions = fraction.betweenSeries('a', 'd', 10000);
+      t.equal(positions.length, 10000, 'positions should have length 10000');
+      t.same(positions.sort(), positions);
     });
 
   });
 
-  describe('compare', function() {
-    it('should return 0 for equal', function () {
-      fraction.compare('abc', 'abc').should.eql(0);
-      fraction.compare('0Ac', '0Ac').should.eql(0);
+  t.test('compare', function (t) {
+    t.test('should return 0 for equal', function (t) {
+      t.plan(3);
+
+      t.equal(fraction.compare('abc', 'abc'), 0);
+      t.equal(fraction.compare('0Ac', '0Ac'), 0);
 
 
-      fraction.compare(String.fromCharCode([0, 0xFFFF, 0xEA10]), String.fromCharCode([0, 0xFFFF, 0xEA10]));
+      t.equal(
+        fraction.compare(
+          String.fromCharCode([0, 0xFFFF, 0xEA10]),
+          String.fromCharCode([0, 0xFFFF, 0xEA10])
+        ),
+        0
+      );
     });
 
-    it('should detect -1 for <', function () {
-      fraction.compare('abc', 'abcd').should.eql(-1);
-      fraction.compare('abc\uaaaa', 'abc\uaaab').should.eql(-1);
-      fraction.compare('a', 'aa').should.eql(-1);
-      fraction.compare('a0', 'aZ').should.eql(-1);
+    t.test('should detect -1 for <', function (t) {
+      t.plan(4);
+
+      t.equal(fraction.compare('abc', 'abcd'), -1);
+      t.equal(fraction.compare('abc\uaaaa', 'abc\uaaab'), -1);
+      t.equal(fraction.compare('a', 'aa'), -1);
+      t.equal(fraction.compare('a0', 'aZ'), -1);
     });
 
-    it('should detect 1 for >', function () {
-      fraction.compare('abcd', 'abc').should.eql(1);
-      fraction.compare('aa', 'a').should.eql(1);
-      fraction.compare('aZ', 'a0').should.eql(1);
+    t.test('should detect 1 for >', function (t) {
+      t.plan(3);
+
+      t.equal(fraction.compare('abcd', 'abc'), 1);
+      t.equal(fraction.compare('aa', 'a'), 1);
+      t.equal(fraction.compare('aZ', 'a0'), 1);
     });
   });
 
