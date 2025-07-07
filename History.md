@@ -1,4 +1,12 @@
 
+1.0.1 / 2025-07-07
+==================
+
+ * better `utils.padRight`
+ * use github actions instead of Travis CI
+ * replace `tape` with `node:test`
+ * use `biome` as a linter and formatter
+
 1.0.0 / 2019-04-11
 ==================
 

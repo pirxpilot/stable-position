@@ -1,6 +1,6 @@
 {
   "name": "stable-position",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate unique position that can be used to order items without renumbering them.",
   "author": {
     "name": "Damian Krzeminski",
