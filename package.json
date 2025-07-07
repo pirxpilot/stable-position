@@ -7,7 +7,10 @@
     "email": "pirxpilot@furkot.com",
     "url": "https://pirxpilot.me"
   },
-  "repository": "pirxpilot/stable-position",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirxpilot/stable-position.git"
+  },
   "license": "MIT",
   "keywords": [
     "stable-position",
@@ -20,5 +23,9 @@
   },
   "scripts": {
     "test": "make check"
-  }
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ]
 }

@@ -1,7 +1,6 @@
 [![NPM version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
+[![Build Status][build-image]][build-url]
 [![Dependency Status][deps-image]][deps-url]
-[![Dev Dependency Status][deps-dev-image]][deps-dev-url]
 
 # stable-position
 
@@ -52,14 +51,12 @@ return position value that is between p and q
 
 MIT © [Damian Krzeminski](https://pirxpilot.me)
 
-[npm-image]: https://img.shields.io/npm/v/stable-position.svg
+[npm-image]: https://img.shields.io/npm/v/stable-position
 [npm-url]: https://npmjs.org/package/stable-position
 
-[travis-url]: https://travis-ci.org/pirxpilot/stable-position
-[travis-image]: https://img.shields.io/travis/pirxpilot/stable-position.svg
+[build-url]: https://github.com/pirxpilot/stable-position/actions/workflows/check.yaml
+[build-image]: https://img.shields.io/github/actions/workflow/status/pirxpilot/stable-position/check.yaml?branch=main
 
-[deps-image]: https://img.shields.io/david/pirxpilot/stable-position.svg
-[deps-url]: https://david-dm.org/pirxpilot/stable-position
+[deps-image]: https://img.shields.io/librariesio/release/npm/stable-position
+[deps-url]: https://libraries.io/npm/stable-position
 
-[deps-dev-image]: https://img.shields.io/david/dev/pirxpilot/stable-position.svg
-[deps-dev-url]: https://david-dm.org/pirxpilot/stable-position?type=dev
