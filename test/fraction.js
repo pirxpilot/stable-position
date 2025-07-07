@@ -1,90 +1,86 @@
-const test = require('tape');
+const test = require('node:test');
 const fraction = require('../lib/fraction');
 
-
-test('effective char range', function (t) {
-  t.test('should be able to store char', function (t) {
+test('effective char range', async t => {
+  await t.test('should be able to store char', t => {
     t.plan(2);
 
-    t.equal(String.fromCharCode(0).charCodeAt(0), 0);
-    t.equal(String.fromCharCode(0xFFFF).charCodeAt(0), 0xFFFF);
+    t.assert.equal(String.fromCharCode(0).charCodeAt(0), 0);
+    t.assert.equal(String.fromCharCode(0xffff).charCodeAt(0), 0xffff);
   });
 });
 
-test('fraction', function (t) {
-
-  t.test('before', function (t) {
-    t.test('should return value smaller than passed', function (t) {
+test('fraction', async t => {
+  await t.test('before', async t => {
+    await t.test('should return value smaller than passed', t => {
       t.plan(1);
-      t.ok(fraction.before('a') < 'a');
+      t.assert.ok(fraction.before('a') < 'a');
     });
   });
 
-  t.test('after', function (t) {
-    t.test('should return value smaller than passed', function (t) {
+  await t.test('after', async t => {
+    await t.test('should return value smaller than passed', t => {
       t.plan(1);
-      t.ok(fraction.after('a') > 'a');
+      t.assert.ok(fraction.after('a') > 'a');
     });
   });
 
-  t.test('first', function (t) {
-    t.test('should return value in the middle of available range', function (t) {
+  await t.test('first', async t => {
+    await t.test('should return value in the middle of available range', t => {
       t.plan(1);
-      t.equal(fraction.first().charCodeAt(0), 0x7FFF);
+      t.assert.equal(fraction.first().charCodeAt(0), 0x7fff);
     });
   });
 
-  t.test('between', function (t) {
-
-    t.test('find a fraction between two values', function (t) {
+  await t.test('between', async t => {
+    await t.test('find a fraction between two values', t => {
       t.plan(7);
 
-      t.equal(fraction.between('0', 'z'), 'U');
-      t.equal(fraction.between('e', 'f'), 'e翿');
-      t.equal(fraction.between('0', '1'), '0翿');
+      t.assert.equal(fraction.between('0', 'z'), 'U');
+      t.assert.equal(fraction.between('e', 'f'), 'e翿');
+      t.assert.equal(fraction.between('0', '1'), '0翿');
 
-      t.equal(fraction.between('U', 'z'), 'g');
-      t.equal(fraction.between('yU', 'z'), 'y耪');
+      t.assert.equal(fraction.between('U', 'z'), 'g');
+      t.assert.equal(fraction.between('yU', 'z'), 'y耪');
 
+      t.assert.equal(fraction.between('abb', 'abbdefZ'), 'abb2');
 
-      t.equal(fraction.between('abb', 'abbdefZ'), 'abb2');
-
-      t.equal(fraction.between('aBBcccc', 'aZ'), 'aN');
+      t.assert.equal(fraction.between('aBBcccc', 'aZ'), 'aN');
     });
 
-    t.test('find in between before', function (t) {
-      let from = '0', to = 'z', b;
+    await t.test('find in between before', t => {
+      const from = '0';
+      let to = 'z';
 
       for (let i = 0; i < 1000; i++) {
-        b = fraction.between(from, to);
-        t.equal(fraction.compare(from, b), -1);
-        t.equal(fraction.compare(to, b), 1);
+        const b = fraction.between(from, to);
+        t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(to, b), 1);
         to = b;
       }
-
-      t.end();
     });
 
-    t.test('find in between after', function (t) {
-      let from = '0', to = 'z', b;
+    await t.test('find in between after', t => {
+      let from = '0';
+      const to = 'z';
 
       for (let i = 0; i < 1000; i++) {
-        b = fraction.between(from, to);
-        t.equal(fraction.compare(from, b), -1);
-        t.equal(fraction.compare(to, b), 1);
+        const b = fraction.between(from, to);
+        t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(to, b), 1);
         from = b;
       }
-
-      t.end();
     });
 
-    t.test('find in between alternating before and after', function (t) {
-      var from = '3', to = 'w', b, i;
+    await t.test('find in between alternating before and after', t => {
+      let from = '3';
+      let to = 'w';
+      let b;
 
-      for (i = 0; i < 5000; i++) {
+      for (let i = 0; i < 5000; i++) {
         b = fraction.between(from, to);
-        t.equal(fraction.compare(from, b), -1);
-        t.equal(fraction.compare(to, b), 1);
+        t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(to, b), 1);
         if (i % 2) {
           from = b;
         } else {
@@ -92,70 +88,61 @@ test('fraction', function (t) {
         }
       }
 
-      t.ok(b.length < 1000, 'b length should be below 1000');
-
-      t.end();
+      t.assert.ok(b.length < 1000, 'b length should be below 1000');
     });
-
   });
 
-  t.test('betweenSeries', function (t) {
-    t.test('should find optimal values between', function (t) {
+  await t.test('betweenSeries', async t => {
+    await t.test('should find optimal values between', t => {
       t.plan(4);
-      t.same(fraction.betweenSeries('a', 'd', 2), ['b', 'c']);
-      t.same(fraction.betweenSeries('a', 'e', 2), ['b', 'c']);
-      t.same(fraction.betweenSeries('a', 'f', 2), ['c', 'e']);
-      t.same(fraction.betweenSeries('a', 'f', 3), ['b', 'c', 'd']);
+      t.assert.deepEqual(fraction.betweenSeries('a', 'd', 2), ['b', 'c']);
+      t.assert.deepEqual(fraction.betweenSeries('a', 'e', 2), ['b', 'c']);
+      t.assert.deepEqual(fraction.betweenSeries('a', 'f', 2), ['c', 'e']);
+      t.assert.deepEqual(fraction.betweenSeries('a', 'f', 3), ['b', 'c', 'd']);
     });
 
-    t.test('should split result to fit additional values', function (t) {
+    await t.test('should split result to fit additional values', t => {
       t.plan(1);
-      t.same(fraction.betweenSeries('a', 'b', 3), ['a\u5554', 'a\uaaa8', 'a\ufffc']);
+      t.assert.deepEqual(fraction.betweenSeries('a', 'b', 3), ['a\u5554', 'a\uaaa8', 'a\ufffc']);
     });
 
-    t.test('should return the sorted list of all positions', function (t) {
+    await t.test('should return the sorted list of all positions', t => {
       t.plan(2);
 
       const positions = fraction.betweenSeries('a', 'd', 10000);
-      t.equal(positions.length, 10000, 'positions should have length 10000');
-      t.same(positions.sort(), positions);
+      t.assert.equal(positions.length, 10000, 'positions should have length 10000');
+      t.assert.deepEqual(positions.sort(), positions);
     });
-
   });
 
-  t.test('compare', function (t) {
-    t.test('should return 0 for equal', function (t) {
+  await t.test('compare', async t => {
+    await t.test('should return 0 for equal', t => {
       t.plan(3);
 
-      t.equal(fraction.compare('abc', 'abc'), 0);
-      t.equal(fraction.compare('0Ac', '0Ac'), 0);
+      t.assert.equal(fraction.compare('abc', 'abc'), 0);
+      t.assert.equal(fraction.compare('0Ac', '0Ac'), 0);
 
-
-      t.equal(
-        fraction.compare(
-          String.fromCharCode([0, 0xFFFF, 0xEA10]),
-          String.fromCharCode([0, 0xFFFF, 0xEA10])
-        ),
+      t.assert.equal(
+        fraction.compare(String.fromCharCode([0, 0xffff, 0xea10]), String.fromCharCode([0, 0xffff, 0xea10])),
         0
       );
     });
 
-    t.test('should detect -1 for <', function (t) {
+    await t.test('should detect -1 for <', t => {
       t.plan(4);
 
-      t.equal(fraction.compare('abc', 'abcd'), -1);
-      t.equal(fraction.compare('abc\uaaaa', 'abc\uaaab'), -1);
-      t.equal(fraction.compare('a', 'aa'), -1);
-      t.equal(fraction.compare('a0', 'aZ'), -1);
+      t.assert.equal(fraction.compare('abc', 'abcd'), -1);
+      t.assert.equal(fraction.compare('abc\uaaaa', 'abc\uaaab'), -1);
+      t.assert.equal(fraction.compare('a', 'aa'), -1);
+      t.assert.equal(fraction.compare('a0', 'aZ'), -1);
     });
 
-    t.test('should detect 1 for >', function (t) {
+    await t.test('should detect 1 for >', t => {
       t.plan(3);
 
-      t.equal(fraction.compare('abcd', 'abc'), 1);
-      t.equal(fraction.compare('aa', 'a'), 1);
-      t.equal(fraction.compare('aZ', 'a0'), 1);
+      t.assert.equal(fraction.compare('abcd', 'abc'), 1);
+      t.assert.equal(fraction.compare('aa', 'a'), 1);
+      t.assert.equal(fraction.compare('aZ', 'a0'), 1);
     });
   });
-
 });
