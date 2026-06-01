@@ -1,5 +1,5 @@
 const test = require('node:test');
-const fraction = require('../lib/fraction');
+const fraction = require('../lib/fraction.js');
 
 test('effective char range', async t => {
   await t.test('should be able to store char', t => {
