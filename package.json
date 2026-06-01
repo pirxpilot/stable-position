@@ -7,6 +7,8 @@
     "email": "pirxpilot@furkot.com",
     "url": "https://pirxpilot.me"
   },
+  "type": "module",
+  "exports": "./index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pirxpilot/stable-position.git"

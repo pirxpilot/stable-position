@@ -1,2 +1,2 @@
-module.exports = require('./lib/fraction.js');
-module.exports.convert = require('./lib/util.js').convert;
+export * from './lib/fraction.js';
+export { convert } from './lib/util.js';

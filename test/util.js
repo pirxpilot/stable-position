@@ -1,5 +1,5 @@
-const test = require('node:test');
-const { charAt, split, padRight, convert } = require('../lib/util.js');
+import test from 'node:test';
+import { charAt, convert, padRight, split } from '../lib/util.js';
 
 test('charAt', async t => {
   await t.test('should work for all lenghts', t => {
