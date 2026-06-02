@@ -1,4 +1,11 @@
 
+2.0.0 / 2026-06-01
+==================
+
+ * update github actions
+ * transition to ESM
+ * upgrade `biome` to 2.4.16
+
 1.0.1 / 2025-07-07
 ==================
 
