@@ -7,6 +7,8 @@
     "email": "pirxpilot@furkot.com",
     "url": "https://pirxpilot.me"
   },
+  "type": "module",
+  "exports": "./index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pirxpilot/stable-position.git"
@@ -19,7 +21,7 @@
     "renumber"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.0.5"
+    "@biomejs/biome": "2.4.16"
   },
   "scripts": {
     "test": "make check"
