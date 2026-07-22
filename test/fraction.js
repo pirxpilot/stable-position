@@ -121,6 +121,11 @@ test('fraction', async t => {
       t.assert.deepEqual(fraction.betweenSeries('a', 'f', 3), ['b', 'c', 'd']);
     });
 
+    await t.test('should find optimal values between common prefixes', t => {
+      t.plan(1);
+      t.assert.deepEqual(fraction.betweenSeries('aaaa', 'aaad', 2), ['aaab', 'aaac']);
+    });
+
     await t.test('should split result to fit additional values', t => {
       t.plan(1);
       t.assert.deepEqual(fraction.betweenSeries('a', 'b', 3), ['a\u5554', 'a\uaaa8', 'a\ufffc']);
