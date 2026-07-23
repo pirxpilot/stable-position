@@ -2,6 +2,17 @@
   "name": "stable-position",
   "version": "2.0.0",
   "description": "Generate unique position that can be used to order items without renumbering them.",
+  "keywords": [
+    "stable-position",
+    "order",
+    "position",
+    "renumber"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirxpilot/stable-position.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Damian Krzeminski",
     "email": "pirxpilot@furkot.com",
@@ -9,25 +20,14 @@
   },
   "type": "module",
   "exports": "./index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pirxpilot/stable-position.git"
-  },
-  "license": "MIT",
-  "keywords": [
-    "stable-position",
-    "order",
-    "position",
-    "renumber"
-  ],
-  "devDependencies": {
-    "@biomejs/biome": "2.4.16"
-  },
-  "scripts": {
-    "test": "make check"
-  },
   "files": [
     "index.js",
     "lib"
-  ]
+  ],
+  "scripts": {
+    "test": "make check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.5"
+  }
 }

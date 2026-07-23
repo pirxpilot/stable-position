@@ -3,7 +3,8 @@
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "organizeImports": "on",
+        "useSortedPackageJson": "on"
       }
     }
   },
@@ -38,16 +39,13 @@
       "project": "recommended"
     },
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
         "noUnusedVariables": "error",
         "useImportExtensions": "error",
         "useJsonImportAttributes": "error"
-      },
-      "complexity": {
-        "noForEach": "off"
       },
       "style": {
         "noUnusedTemplateLiteral": "error",
@@ -56,18 +54,6 @@
         "useDefaultParameterLast": "error",
         "useNumberNamespace": "error",
         "useSingleVarDeclarator": "error"
-      },
-      "performance": {
-        "noDelete": "off"
-      },
-      "suspicious": {
-        "noAssignInExpressions": "off",
-        "useIterableCallbackReturn": {
-          "level": "error",
-          "options": {
-            "checkForEach": false
-          }
-        }
       }
     }
   }
