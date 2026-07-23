@@ -13,15 +13,17 @@ test('effective char range', async t => {
 test('fraction', async t => {
   await t.test('before', async t => {
     await t.test('should return value smaller than passed', t => {
-      t.plan(1);
+      t.plan(2);
       t.assert.ok(fraction.before('a') < 'a');
+      t.assert.ok('a' > fraction.before('a'));
     });
   });
 
   await t.test('after', async t => {
-    await t.test('should return value smaller than passed', t => {
-      t.plan(1);
+    await t.test('should return value bigger than passed', t => {
+      t.plan(2);
       t.assert.ok(fraction.after('a') > 'a');
+      t.assert.ok('a' < fraction.after('a'));
     });
   });
 
@@ -54,8 +56,13 @@ test('fraction', async t => {
 
       for (let i = 0; i < 1000; i++) {
         const b = fraction.between(from, to);
+
         t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(b, to), -1);
+
         t.assert.equal(fraction.compare(to, b), 1);
+        t.assert.equal(fraction.compare(b, from), 1);
+
         to = b;
       }
     });
@@ -66,8 +73,13 @@ test('fraction', async t => {
 
       for (let i = 0; i < 1000; i++) {
         const b = fraction.between(from, to);
+
         t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(b, to), -1);
+
         t.assert.equal(fraction.compare(to, b), 1);
+        t.assert.equal(fraction.compare(b, from), 1);
+
         from = b;
       }
     });
@@ -79,8 +91,13 @@ test('fraction', async t => {
 
       for (let i = 0; i < 5000; i++) {
         b = fraction.between(from, to);
+
         t.assert.equal(fraction.compare(from, b), -1);
+        t.assert.equal(fraction.compare(b, to), -1);
+
         t.assert.equal(fraction.compare(to, b), 1);
+        t.assert.equal(fraction.compare(b, from), 1);
+
         if (i % 2) {
           from = b;
         } else {
@@ -88,7 +105,10 @@ test('fraction', async t => {
         }
       }
 
-      t.assert.ok(b.length < 1000, 'b length should be below 1000');
+      t.assert.ok(b.length < 350, 'b length should be below 350');
+      const text = JSON.stringify({ position: b });
+      const obj = JSON.parse(text);
+      t.assert.equal(obj.position, b, 'parsed position should match original');
     });
   });
 
@@ -101,17 +121,23 @@ test('fraction', async t => {
       t.assert.deepEqual(fraction.betweenSeries('a', 'f', 3), ['b', 'c', 'd']);
     });
 
+    await t.test('should find optimal values between common prefixes', t => {
+      t.plan(1);
+      t.assert.deepEqual(fraction.betweenSeries('aaaa', 'aaad', 2), ['aaab', 'aaac']);
+    });
+
     await t.test('should split result to fit additional values', t => {
       t.plan(1);
       t.assert.deepEqual(fraction.betweenSeries('a', 'b', 3), ['a\u5554', 'a\uaaa8', 'a\ufffc']);
     });
 
     await t.test('should return the sorted list of all positions', t => {
-      t.plan(2);
+      t.plan(3);
 
       const positions = fraction.betweenSeries('a', 'd', 10000);
       t.assert.equal(positions.length, 10000, 'positions should have length 10000');
       t.assert.deepEqual(positions.sort(), positions);
+      t.assert.ok(positions.join('').length < 20000, 'each position is at most 2 chars');
     });
   });
 
@@ -138,9 +164,10 @@ test('fraction', async t => {
     });
 
     await t.test('should detect 1 for >', t => {
-      t.plan(3);
+      t.plan(4);
 
       t.assert.equal(fraction.compare('abcd', 'abc'), 1);
+      t.assert.equal(fraction.compare('abc\uaaab', 'abc\uaaaa'), 1);
       t.assert.equal(fraction.compare('aa', 'a'), 1);
       t.assert.equal(fraction.compare('aZ', 'a0'), 1);
     });
