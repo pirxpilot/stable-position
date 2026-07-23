@@ -1,4 +1,12 @@
 
+2.0.1 / 2026-07-23
+==================
+
+ * minor optimization
+ * improve test coverage
+ * add more assertions
+ * upgrade `biome` to 2.5.5
+
 2.0.0 / 2026-06-01
 ==================
 
